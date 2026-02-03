@@ -92,8 +92,12 @@
   </div>
 
 <script>
-  localStorage.setItem("step", "1");
-window.location.href = "index2.html";
+  /* ---------- STEP GUARD (START PAGE) ---------- */
+
+  // Step 0 = start
+  if (!localStorage.getItem("step")) {
+    localStorage.setItem("step", "0");
+  }
 
   /* ---------- ROTATING SUBTEXT ---------- */
 
@@ -111,7 +115,6 @@ window.location.href = "index2.html";
 
   function rotateText() {
     subtextEl.style.opacity = 0;
-
     setTimeout(() => {
       subtextEl.textContent = messages[msgIndex];
       subtextEl.style.opacity = 1;
@@ -122,6 +125,7 @@ window.location.href = "index2.html";
   rotateText();
   setInterval(rotateText, 3000);
 
+  /* ---------- COUNTER + YES LOGIC ---------- */
 
   const yesBtn = document.getElementById("yes");
   const noBtn = document.getElementById("no");
@@ -140,21 +144,21 @@ window.location.href = "index2.html";
 
   setTimeout(() => {
     inverted = false;
-    yesBtn.innerText = "Yes";
   }, 15000);
 
   yesBtn.addEventListener("click", () => {
     if (inverted) {
       yesBtn.innerText = "No";
-      noBtn.innerText="Yes";
+      noBtn.innerText = "Yes";
       yesBtn.style.transform = "scale(0.95)";
       setTimeout(() => {
         yesBtn.innerText = "Yes";
-        noBtn.innerText="No";
+        noBtn.innerText = "No";
         yesBtn.style.transform = "scale(1)";
       }, 300);
     } else {
       clearInterval(secondTimer);
+      localStorage.setItem("step", "1"); // unlock next page
       window.location.href = "index2.html";
     }
   });
@@ -162,4 +166,3 @@ window.location.href = "index2.html";
 
 </body>
 </html>
-
