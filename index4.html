@@ -35,7 +35,6 @@
     animation: rise 1.4s ease forwards;
   }
 
-  /* paper texture */
   .paper::before {
     content: "";
     position: absolute;
@@ -101,13 +100,11 @@
   </p>
 
   <p>
-    
     And you mean more to me than you know.
     Keep being you.
     Im very proud of you my sweetheart.
     <br>
     ( smh look at the score loser: <span id="score">0</span> )
-
   </p>
 
   <p class="signature">
@@ -117,15 +114,18 @@
 </div>
 
 <script>
-  const scoreEl = document.getElementById("score");
-  const savedScore = Number(localStorage.getItem("loveScore"))+1;
-
-  if (scoreEl && savedScore !== null) {
-    scoreEl.textContent = `(${savedScore}) * ∞`;
+  /* ---------- STEP GUARD ---------- */
+  const step = Number(localStorage.getItem("step")) || 0;
+  if (step < 3) {
+    window.location.href = "index.html";
   }
+
+  /* ---------- SCORE DISPLAY ---------- */
+  const scoreEl = document.getElementById("score");
+  const savedScore = Number(localStorage.getItem("loveScore")) || 0;
+
+  scoreEl.textContent = `(${savedScore + 1}) × ∞`;
 </script>
-
-
 
 </body>
 </html>
