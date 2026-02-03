@@ -114,7 +114,8 @@
     btn.addEventListener("click", () => {
       if (isYes) {
         localStorage.setItem("step", "3"); // unlock index4
-        window.location.href = "index4.html";
+        speedMultiplier+=1.2;
+        // window.location.href = "index4.html";
       } else {
         speedMultiplier += 0.9;
         if (navigator.vibrate) navigator.vibrate(80);
@@ -172,3 +173,4 @@
 
 </body>
 </html>
+
