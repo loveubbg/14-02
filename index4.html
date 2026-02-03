@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Note</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(1000px 500px at top, rgba(255,210,180,0.25), transparent 60%),
+      linear-gradient(180deg, #2a1812, #120a08);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #3b2a1f;
+  }
+
+  .paper {
+    position: relative;
+    width: min(94%, 460px);
+    padding: 46px 40px;
+    background: linear-gradient(180deg, #f6efe6, #efe5d8);
+    border-radius: 20px;
+    box-shadow:
+      0 25px 50px rgba(0,0,0,0.45),
+      inset 0 0 0 1px rgba(0,0,0,0.06);
+    animation: rise 1.4s ease forwards;
+  }
+
+  /* paper texture */
+  .paper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23f)' opacity='0.08'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 18px;
+    color: #2e1e15;
+  }
+
+  p {
+    font-size: 16.5px;
+    line-height: 1.85;
+    margin-bottom: 16px;
+    color: #3b2a1f;
+  }
+
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .signature {
+    margin-top: 28px;
+    font-style: italic;
+    color: #4a3528;
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="paper">
+  <h1>My Helia.</h1>
+
+  <p>
+    I didn’t make this to test you.
+    I made it because I like the way you stay,
+    even when it would be easier to leave. (technically you did leave but alr)
+  </p>
+
+  <p>
+    From the moment I met you, all those years ago, not a day has gone by when I haven’t thought of you.
+    <br>
+    You are in my very soul, tormenting me (as you should).
+  </p>
+
+  <p>
+    
+    And you mean more to me than you know.
+    Keep being you.
+    Im very proud of you my sweetheart.
+    <br>
+    ( smh look at the score loser: <span id="score">0</span> )
+
+  </p>
+
+  <p class="signature">
+    — always yours,
+    <br> Rachit
+  </p>
+</div>
+
+<script>
+  const scoreEl = document.getElementById("score");
+  const savedScore = Number(localStorage.getItem("loveScore"))+1;
+
+  if (scoreEl && savedScore !== null) {
+    scoreEl.textContent = `(${savedScore}) * ∞`;
+  }
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Persistence</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: black;
+    color: white;
+    font-family: system-ui;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .box {
+    position: relative;
+    z-index: 2;
+    background: rgba(0,0,0,0.6);
+    padding: 30px;
+    border-radius: 20px;
+    width: min(90%, 400px);
+  }
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  p {
+    min-height: 1.5em;
+  }
+
+  .buttons {
+    position: relative;
+    margin-top: 20px;
+    height: 60px;
+  }
+
+  button {
+    padding: 12px 22px;
+    font-size: 18px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+  }
+
+  #yes {
+    background: #ff4d6d;
+    color: white;
+    position: relative;
+    z-index: 1;
+  }
+
+  #no {
+    background: #555;
+    color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    transition: transform 0.15s ease;
+  }
+
+  .heart {
+    position: absolute;
+    top: -20px;
+    color: pink;
+    font-size: 20px;
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    to {
+      transform: translateY(110vh);
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>You Sure?</h1>
+  <p id="subtext">You can say no just saying</p>
+
+  <div class="buttons">
+    <button id="yes">Yes</button>
+    <button id="no">No</button>
+  </div>
+</div>
+
+<script>
+  let clickCount = 0;
+
+  const yesBtn = document.getElementById("yes");
+  const noBtn = document.getElementById("no");
+  const subtext = document.getElementById("subtext");
+
+  const messages = [
+    "You wish you could.",
+    "Atleast hesitate toh karo.",
+    "Haha. Knew I loved you more.",
+    "You toh hate me onli.",
+    "Itna mehnat karke wah.",
+    "Nahi dabne wala Yes aapse",
+    "Nice try tho",
+    "I love making you smile.",
+    "I love you more only."
+  ];
+
+  // Block Yes until messages are done
+  yesBtn.addEventListener("mouseenter", () => {
+    if (clickCount < messages.length) {
+      const yesRect = yesBtn.getBoundingClientRect();
+      const parentRect = yesBtn.parentElement.getBoundingClientRect();
+
+      const x = yesRect.left - parentRect.left;
+      const y = yesRect.top - parentRect.top;
+
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+  });
+
+  // Clicking No advances narrative
+  noBtn.addEventListener("click", () => {
+    if (clickCount < messages.length) {
+      subtext.innerText = messages[clickCount];
+      clickCount++;
+    }
+
+    // Release control at the end
+    if (clickCount === messages.length) {
+      noBtn.style.pointerEvents = "none";
+      noBtn.style.opacity = "0.4";
+      noBtn.style.transform = "translate(0,0)";
+    }
+
+    if (navigator.vibrate) navigator.vibrate(120);
+  });
+
+  // Yes only works after release
+  yesBtn.addEventListener("click", () => {
+    if (clickCount >= messages.length) {
+      window.location.href = "index3.html";
+    }
+  });
+
+  // Ambient hearts
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "❤";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = 2 + Math.random() * 3 + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 5000);
+  }
+
+  setInterval(createHeart, 400);
+</script>
+
+</body>
+</html>

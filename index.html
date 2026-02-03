@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentine?</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle, #ff4d6d, #1a1a1a);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .card {
+      background: rgba(0,0,0,0.5);
+      padding: 30px;
+      border-radius: 20px;
+      width: min(90%, 400px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    h1 {
+      font-size: clamp(24px, 5vw, 36px);
+      margin-bottom: 8px;
+    }
+
+    #subtext {
+      min-height: 1.5em;
+      font-size: 15px;
+      opacity: 0.9;
+      margin-bottom: 12px;
+      transition: opacity 0.4s ease;
+    }
+
+    #counter {
+      font-size: 14px;
+      opacity: 0.85;
+      margin-bottom: 15px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    button {
+      border: none;
+      padding: 12px 22px;
+      font-size: 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    #yes {
+      background: #ff4d6d;
+      color: white;
+    }
+
+    #no {
+      background: #555;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h1>Will you be my Valentine? ❤️</h1>
+
+    <p id="subtext"></p>
+
+    <div id="counter">Rachit Loves Daisy More Counter: 0</div>
+
+    <div class="buttons">
+      <button id="yes">Yes</button>
+      <button id="no">No</button>
+    </div>
+  </div>
+
+<script>
+  /* ---------- ROTATING SUBTEXT ---------- */
+
+  const subtextEl = document.getElementById("subtext");
+
+  const messages = [
+    "Take your time. I’ll wait.",
+    "Mai toh abhi tak yes boldeta bhai",
+    "No pressure. Just honesty.",
+    "Tough Decision wow",
+    "mujhe kya i love u more only"
+  ];
+
+  let msgIndex = 0;
+
+  function rotateText() {
+    subtextEl.style.opacity = 0;
+
+    setTimeout(() => {
+      subtextEl.textContent = messages[msgIndex];
+      subtextEl.style.opacity = 1;
+      msgIndex = (msgIndex + 1) % messages.length;
+    }, 400);
+  }
+
+  rotateText();
+  setInterval(rotateText, 3000);
+
+
+  const yesBtn = document.getElementById("yes");
+  const noBtn = document.getElementById("no");
+  const counterEl = document.getElementById("counter");
+
+  let counter = Number(localStorage.getItem("loveScore")) || 0;
+  counterEl.innerText = `Rachit Loves Daisy More Counter: ${counter}`;
+
+  let inverted = true;
+
+  const secondTimer = setInterval(() => {
+    counter++;
+    localStorage.setItem("loveScore", counter);
+    counterEl.innerText = `Rachit Loves Daisy More Counter: ${counter}`;
+  }, 1000);
+
+  setTimeout(() => {
+    inverted = false;
+    yesBtn.innerText = "Yes";
+  }, 15000);
+
+  yesBtn.addEventListener("click", () => {
+    if (inverted) {
+      yesBtn.innerText = "No";
+      noBtn.innerText="Yes";
+      yesBtn.style.transform = "scale(0.95)";
+      setTimeout(() => {
+        yesBtn.innerText = "Yes";
+        noBtn.innerText="No";
+        yesBtn.style.transform = "scale(1)";
+      }, 300);
+    } else {
+      clearInterval(secondTimer);
+      window.location.href = "index2.html";
+    }
+  });
+</script>
+
+</body>
+</html>

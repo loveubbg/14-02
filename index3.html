@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find It</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #0b0b0b;
+      font-family: system-ui;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      color: white;
+    }
+
+    #prompt {
+      position: fixed;
+      top: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 20px;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    #counter {
+      position: fixed;
+      top: 50px;
+      width: 100%;
+      text-align: center;
+      font-size: 14px;
+      opacity: 0.7;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    button {
+      position: absolute;
+      padding: 10px 18px;
+      font-size: 14px;
+      border-radius: 10px;
+      border: none;
+      background: #555;
+      color: white;
+      cursor: pointer;
+      /* user-select: none; */
+    }
+
+    .blink {
+      animation: blink 0.3s steps(1) infinite;
+      background-color: red;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="prompt">Do you love me more?</div>
+  <div id="counter">Rachit Loves Daisy More Counter: 0</div>
+
+<script>
+  /* ---------- GLOBAL SCORE ---------- */
+
+  let wrongClicks = Number(localStorage.getItem("loveScore")) || 0;
+  const counter = document.getElementById("counter");
+
+  function updateCounter() {
+    counter.innerText = `Rachit Loves Daisy More Counter: ${wrongClicks}`;
+    localStorage.setItem("loveScore", wrongClicks);
+  }
+
+  updateCounter();
+
+  /* Count EVERY click (Yes / No / empty space) */
+  document.addEventListener("click", () => {
+    wrongClicks++;
+    updateCounter();
+  });
+
+  /* ---------- BUTTON SETUP ---------- */
+
+  const TOTAL_BUTTONS = 130;
+  const buttons = [];
+  let speedMultiplier = 1;
+
+  function createButton(isYes = false) {
+    const btn = document.createElement("button");
+    btn.innerText = isYes ? "Yes" : "No";
+
+    btn.x = Math.random() * (window.innerWidth - 80);
+    btn.y = Math.random() * (window.innerHeight - 40);
+
+    btn.vx = (Math.random() * 1.4 + 0.3) * (Math.random() < 0.5 ? -1 : 1);
+    btn.vy = (Math.random() * 1.4 + 0.3) * (Math.random() < 0.5 ? -1 : 1);
+
+    btn.style.transform = `translate(${btn.x}px, ${btn.y}px)`;
+
+    btn.addEventListener("click", () => {
+      if (isYes) {
+        window.location.href = "index4.html";
+      } else {
+        speedMultiplier += 0.5;
+        if (navigator.vibrate) navigator.vibrate(80);
+      }
+    });
+
+    document.body.appendChild(btn);
+    buttons.push(btn);
+
+    return btn;
+  }
+
+  /* ---------- CREATE BUTTONS ---------- */
+
+  const yesIndex = Math.floor(Math.random() * TOTAL_BUTTONS);
+  let yesButton = null;
+
+  for (let i = 0; i < TOTAL_BUTTONS; i++) {
+    const btn = createButton(i === yesIndex);
+    if (i === yesIndex) yesButton = btn;
+  }
+
+  /* Blink Yes briefly */
+  yesButton.classList.add("blink");
+  setTimeout(() => yesButton.classList.remove("blink"), 1000);
+
+  /* ---------- ANIMATION LOOP ---------- */
+
+  function animate() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    for (const btn of buttons) {
+      btn.x += btn.vx * speedMultiplier;
+      btn.y += btn.vy * speedMultiplier;
+
+      if (btn.x <= 0 || btn.x >= w - 80) btn.vx *= -1;
+      if (btn.y <= 0 || btn.y >= h - 40) btn.vy *= -1;
+
+      btn.style.transform = `translate(${btn.x}px, ${btn.y}px)`;
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  /* ---------- MERCY EXIT ---------- */
+
+  setTimeout(() => {
+    window.location.href = "index4.html";
+  }, 60000);
+</script>
+
+</body>
+</html>
