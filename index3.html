@@ -50,7 +50,6 @@
       background: #555;
       color: white;
       cursor: pointer;
-      /* user-select: none; */
     }
 
     .blink {
@@ -70,6 +69,12 @@
   <div id="counter">Rachit Loves Daisy More Counter: 0</div>
 
 <script>
+  /* ---------- STEP GUARD ---------- */
+  const step = Number(localStorage.getItem("step")) || 0;
+  if (step < 2) {
+    window.location.href = "index.html";
+  }
+
   /* ---------- GLOBAL SCORE ---------- */
 
   let wrongClicks = Number(localStorage.getItem("loveScore")) || 0;
@@ -82,7 +87,7 @@
 
   updateCounter();
 
-  /* Count EVERY click (Yes / No / empty space) */
+  /* Count EVERY click */
   document.addEventListener("click", () => {
     wrongClicks++;
     updateCounter();
@@ -108,6 +113,7 @@
 
     btn.addEventListener("click", () => {
       if (isYes) {
+        localStorage.setItem("step", "3"); // unlock index4
         window.location.href = "index4.html";
       } else {
         speedMultiplier += 0.9;
@@ -159,10 +165,10 @@
   /* ---------- MERCY EXIT ---------- */
 
   setTimeout(() => {
+    localStorage.setItem("step", "3"); // unlock index4
     window.location.href = "index4.html";
   }, 60000);
 </script>
 
 </body>
 </html>
-
